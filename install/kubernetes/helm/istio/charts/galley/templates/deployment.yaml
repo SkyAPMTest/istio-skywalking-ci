@@ -123,10 +123,11 @@ spec:
                 - --interval=10s
             initialDelaySeconds: 5
             periodSeconds: 5
-          resources:
 {{- if .Values.resources }}
+          resources:
 {{ toYaml .Values.resources | indent 12 }}
 {{- else }}
+          resources:
 {{ toYaml .Values.global.defaultResources | indent 12 }}
 {{- end }}
       volumes:

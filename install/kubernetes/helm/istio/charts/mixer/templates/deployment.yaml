@@ -88,12 +88,14 @@
           value: "{{ $val }}"
         {{- end }}
         {{- end }}
-        resources:
 {{- if .Values.policy.resources }}
+        resources:
 {{ toYaml .Values.policy.resources | indent 10 }}
 {{- else if .Values.resources }}
+        resources:
 {{ toYaml .Values.resources | indent 10 }}
 {{- else }}
+        resources:
 {{ toYaml .Values.global.defaultResources | indent 10 }}
 {{- end }}
         volumeMounts:
@@ -168,10 +170,11 @@
               fieldPath: status.podIP
         - name: SDS_ENABLED
           value: "{{ $.Values.global.sds.enabled }}"
-        resources:
 {{- if $.Values.global.proxy.resources }}
+        resources:
 {{ toYaml $.Values.global.proxy.resources | indent 10 }}
 {{- else }}
+        resources:
 {{ toYaml .Values.global.defaultResources | indent 10 }}
 {{- end }}
         volumeMounts:
@@ -288,12 +291,14 @@
           value: "{{ $val }}"
         {{- end }}
         {{- end }}
-        resources:
 {{- if .Values.telemetry.resources }}
+        resources:
 {{ toYaml .Values.telemetry.resources | indent 10 }}
 {{- else if .Values.resources }}
+        resources:
 {{ toYaml .Values.resources | indent 10 }}
 {{- else }}
+        resources:
 {{ toYaml .Values.global.defaultResources | indent 10 }}
 {{- end }}
         volumeMounts:
@@ -368,10 +373,11 @@
               fieldPath: status.podIP
         - name: SDS_ENABLED
           value: "{{ $.Values.global.sds.enabled }}"
-        resources:
 {{- if $.Values.global.proxy.resources }}
+        resources:
 {{ toYaml $.Values.global.proxy.resources | indent 10 }}
 {{- else }}
+        resources:
 {{ toYaml .Values.global.defaultResources | indent 10 }}
 {{- end }}
         volumeMounts:

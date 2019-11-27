@@ -113,10 +113,11 @@ spec:
             value: "{{ .Values.enableProtocolSniffingForOutbound }}"
           - name: PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_INBOUND
             value: "{{ .Values.enableProtocolSniffingForInbound }}"
-          resources:
 {{- if .Values.resources }}
+          resources:
 {{ toYaml .Values.resources | indent 12 }}
 {{- else }}
+          resources:
 {{ toYaml .Values.global.defaultResources | indent 12 }}
 {{- end }}
           volumeMounts:
@@ -187,10 +188,11 @@ spec:
                 fieldPath: status.podIP
           - name: SDS_ENABLED
             value: "{{ $.Values.global.sds.enabled }}"
-          resources:
 {{- if .Values.global.proxy.resources }}
+          resources:
 {{ toYaml .Values.global.proxy.resources | indent 12 }}
 {{- else }}
+          resources:
 {{ toYaml .Values.global.defaultResources | indent 12 }}
 {{- end }}
           volumeMounts:

@@ -64,10 +64,11 @@ spec:
           image: "{{ $.Values.global.hub }}/{{ $spec.sds.image }}:{{ $.Values.global.tag }}"
 {{- end }}
           imagePullPolicy: {{ $.Values.global.imagePullPolicy }}
-          resources:
 {{- if $spec.sds.resources }}
+          resources:
 {{ toYaml $spec.sds.resources | indent 12 }}
 {{- else }}
+          resources:
 {{ toYaml $.Values.global.defaultResources | indent 12 }}
 {{- end }}
           env:
@@ -194,10 +195,11 @@ spec:
             periodSeconds: 2
             successThreshold: 1
             timeoutSeconds: 1
-          resources:
 {{- if $spec.resources }}
+          resources:
 {{ toYaml $spec.resources | indent 12 }}
 {{- else }}
+          resources:
 {{ toYaml $.Values.global.defaultResources | indent 12 }}
 {{- end }}
           env:
