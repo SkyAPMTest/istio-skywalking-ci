@@ -71,13 +71,6 @@ spec:
           mountPath: "/kiali-cert"
         - name: kiali-secret
           mountPath: "/kiali-secret"
-{{- if .Values.resources }}
-        resources:
-{{ toYaml .Values.resources | indent 10 }}
-{{- else }}
-        resources:
-{{ toYaml .Values.global.defaultResources | indent 10 }}
-{{- end }}
       volumes:
       - name: kiali-configuration
         configMap:

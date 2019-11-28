@@ -64,13 +64,6 @@ spec:
           image: "{{ $.Values.global.hub }}/{{ $spec.sds.image }}:{{ $.Values.global.tag }}"
 {{- end }}
           imagePullPolicy: {{ $.Values.global.imagePullPolicy }}
-{{- if $spec.sds.resources }}
-          resources:
-{{ toYaml $spec.sds.resources | indent 12 }}
-{{- else }}
-          resources:
-{{ toYaml $.Values.global.defaultResources | indent 12 }}
-{{- end }}
           env:
           - name: "ENABLE_WORKLOAD_SDS"
             value: "false"
@@ -195,13 +188,6 @@ spec:
             periodSeconds: 2
             successThreshold: 1
             timeoutSeconds: 1
-{{- if $spec.resources }}
-          resources:
-{{ toYaml $spec.resources | indent 12 }}
-{{- else }}
-          resources:
-{{ toYaml $.Values.global.defaultResources | indent 12 }}
-{{- end }}
           env:
           - name: NODE_NAME
             valueFrom:

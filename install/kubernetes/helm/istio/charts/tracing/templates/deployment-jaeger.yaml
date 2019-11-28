@@ -90,13 +90,6 @@ spec:
           - name: data
             mountPath: /badger
 {{- end }}
-{{- if .Values.jaeger.resources }}
-          resources:
-{{ toYaml .Values.jaeger.resources | indent 12 }}
-{{- else }}
-          resources:
-{{ toYaml .Values.global.defaultResources | indent 12 }}
-{{- end }}
       affinity:
       {{- include "nodeaffinity" . | indent 6 }}
       {{- include "podAntiAffinity" . | indent 6 }}

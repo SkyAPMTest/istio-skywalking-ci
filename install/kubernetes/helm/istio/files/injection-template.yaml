@@ -36,12 +36,6 @@ initContainers:
   - "{{ index .ObjectMeta.Annotations `traffic.sidecar.istio.io/kubevirtInterfaces` }}"
   {{ end -}}
   imagePullPolicy: "{{ .Values.global.imagePullPolicy }}"
-{{- if .Values.global.proxy.init.resources }}
-  resources:
-    {{ toYaml .Values.global.proxy.init.resources | indent 4 }}
-{{- else }}
-  resources: {}
-{{- end }}
   securityContext:
     runAsUser: 0
     runAsNonRoot: false
@@ -63,7 +57,6 @@ initContainers:
     - /bin/sh
   image: {{ $.Values.global.proxy.enableCoreDumpImage }}
   imagePullPolicy: IfNotPresent
-  resources: {}
   securityContext:
     runAsUser: 0
     runAsNonRoot: false
@@ -301,20 +294,6 @@ containers:
     {{- end }}
     runAsUser: 1337
     {{- end }}
-  resources:
-    {{ if or (isset .ObjectMeta.Annotations `sidecar.istio.io/proxyCPU`) (isset .ObjectMeta.Annotations `sidecar.istio.io/proxyMemory`) -}}
-    requests:
-      {{ if (isset .ObjectMeta.Annotations `sidecar.istio.io/proxyCPU`) -}}
-      cpu: "{{ index .ObjectMeta.Annotations `sidecar.istio.io/proxyCPU` }}"
-      {{ end}}
-      {{ if (isset .ObjectMeta.Annotations `sidecar.istio.io/proxyMemory`) -}}
-      memory: "{{ index .ObjectMeta.Annotations `sidecar.istio.io/proxyMemory` }}"
-      {{ end }}
-  {{ else -}}
-{{- if .Values.global.proxy.resources }}
-    {{ toYaml .Values.global.proxy.resources | indent 4 }}
-{{- end }}
-  {{  end -}}
   volumeMounts:
   {{ if (isset .ObjectMeta.Annotations `sidecar.istio.io/bootstrapOverride`) }}
   - mountPath: /etc/istio/custom-bootstrap

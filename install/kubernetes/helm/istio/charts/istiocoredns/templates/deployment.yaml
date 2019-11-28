@@ -62,13 +62,6 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
-{{- if .Values.resources }}
-        resources:
-{{ toYaml .Values.resources | indent 10 }}
-{{- else }}
-        resources:
-{{ toYaml .Values.global.defaultResources | indent 10 }}
-{{- end }}
       - name: istio-coredns-plugin
         command:
         - /usr/local/bin/plugin
@@ -78,13 +71,6 @@ spec:
         - containerPort: 8053
           name: dns-grpc
           protocol: TCP
-{{- if .Values.resources }}
-        resources:
-{{ toYaml .Values.resources | indent 10 }}
-{{- else }}
-        resources:
-{{ toYaml .Values.global.defaultResources | indent 10 }}
-{{- end }}
       dnsPolicy: Default
       volumes:
       - name: config-volume

@@ -85,13 +85,6 @@ spec:
                 - --interval=4s
             initialDelaySeconds: 4
             periodSeconds: 4
-{{- if .Values.resources }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-{{- else }}
-          resources:
-{{ toYaml .Values.global.defaultResources | indent 12 }}
-{{- end }}
       volumes:
       - name: config-volume
         configMap:

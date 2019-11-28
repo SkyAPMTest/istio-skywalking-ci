@@ -18,13 +18,6 @@ istio-ingressgateway:
     # SDS server that watches kubernetes secrets and provisions credentials to ingress gateway.
     # This server runs in the same pod as ingress gateway.
     image: node-agent-k8s
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 2000m
-        memory: 1024Mi
 
   labels:
     app: istio-ingressgateway
@@ -36,13 +29,7 @@ istio-ingressgateway:
   # replicaCount: 1
   rollingMaxSurge: 100%
   rollingMaxUnavailable: 25%
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 2000m
-      memory: 1024Mi
+  resources: {}
   cpu:
     targetAverageUtilization: 80
   loadBalancerIP: ""

@@ -49,13 +49,6 @@ zipkin:
   podAnnotations: {}
   probeStartupDelay: 200
   queryPort: 9411
-  resources:
-    limits:
-      cpu: 300m
-      memory: 900Mi
-    requests:
-      cpu: 150m
-      memory: 900Mi
   javaOptsHeap: 700
   # From: https://github.com/openzipkin/zipkin/blob/master/zipkin-server/src/main/resources/zipkin-server-shared.yml#L51
   # Maximum number of spans to keep in memory.  When exceeded, oldest traces (and their spans) will be purged.
