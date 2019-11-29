@@ -28,9 +28,6 @@ spec:
         istio: sidecar-injector
       annotations:
         sidecar.istio.io/inject: "false"
-        {{- if .Values.podAnnotations }}
-{{ toYaml .Values.podAnnotations | indent 8 }}
-        {{- end }}
     spec:
       serviceAccountName: istio-sidecar-injector-service-account
 {{- if .Values.global.priorityClassName }}
@@ -51,12 +48,7 @@ spec:
             - --injectConfig=/etc/istio/inject/config
             - --meshConfig=/etc/istio/config/mesh
             - --healthCheckInterval=2s
-            - --healthCheckFile=/tmp/health
-{{- if .Values.global.operatorManageWebhooks }}
-            - --reconcileWebhookConfig=false
-{{- else }}
-            - --reconcileWebhookConfig=true
-{{- end }}
+            - --healthCheckFile=/health
           volumeMounts:
           - name: config-volume
             mountPath: /etc/istio/config
@@ -72,7 +64,7 @@ spec:
               command:
                 - /usr/local/bin/sidecar-injector
                 - probe
-                - --probe-path=/tmp/health
+                - --probe-path=/health
                 - --interval=4s
             initialDelaySeconds: 4
             periodSeconds: 4
@@ -81,7 +73,7 @@ spec:
               command:
                 - /usr/local/bin/sidecar-injector
                 - probe
-                - --probe-path=/tmp/health
+                - --probe-path=/health
                 - --interval=4s
             initialDelaySeconds: 4
             periodSeconds: 4
@@ -91,11 +83,7 @@ spec:
           name: istio
       - name: certs
         secret:
-{{- if .Values.global.certificates }}
-          secretName: dns.istio-sidecar-injector-service-account
-{{- else }}
           secretName: istio.istio-sidecar-injector-service-account
-{{- end }}
       - name: inject-config
         configMap:
           name: istio-sidecar-injector

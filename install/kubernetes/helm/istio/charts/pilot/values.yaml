@@ -15,19 +15,19 @@ traceSampling: 1.0
 # if protocol sniffing is enabled for outbound
 enableProtocolSniffingForOutbound: true
 # if protocol sniffing is enabled for inbound
-enableProtocolSniffingForInbound: true
+enableProtocolSniffingForInbound: false
 # Resources for a small pilot install
-resources: {}
-#  requests:
-#    cpu: 500m
-#    memory: 2048Mi
+resources:
+  requests:
+    cpu: 500m
+    memory: 2048Mi
 env:
   PILOT_PUSH_THROTTLE: 100
+  GODEBUG: gctrace=1
 cpu:
   targetAverageUtilization: 80
 nodeSelector: {}
 tolerations: []
-podAnnotations: {}
 
 # Specify the pod anti-affinity that allows you to constrain which nodes
 # your pod is eligible to be scheduled based on labels on pods that are
@@ -54,10 +54,3 @@ podAntiAffinityTermLabelSelector: []
 # to a pilot. It balances out load across pilot instances at the cost of
 # increasing system churn.
 keepaliveMaxServerConnectionAge: 30m
-
-# This is used to set the source of configuration for
-# the associated address in configSource, if nothing is specificed
-# the default MCP is assumed. The alternative option is SERVICE_REGISTRY
-# which describes the source is only forwarding synthetic service entries
-configSource:
-  subscribedResources:

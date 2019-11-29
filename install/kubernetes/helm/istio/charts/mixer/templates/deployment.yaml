@@ -78,11 +78,6 @@
           {{- end }}
         {{- if .Values.env }}
         env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
         {{- range $key, $val := .Values.env }}
         - name: {{ $key }}
           value: "{{ $val }}"
@@ -133,15 +128,6 @@
       {{- if $.Values.global.trustDomain }}
         - --trust-domain={{ $.Values.global.trustDomain }}
       {{- end }}
-      {{- if $.Values.global.proxy.logLevel }}
-        - --proxyLogLevel={{ $.Values.global.proxy.logLevel }}
-      {{- end}}
-      {{- if $.Values.global.proxy.componentLogLevel }}
-        - --proxyComponentLogLevel={{ $.Values.global.proxy.componentLogLevel }}
-      {{- end}}
-      {{- if $.Values.global.logging.level }}
-        - --log_output_level={{ $.Values.global.logging.level }}
-      {{- end}}
         env:
         - name: POD_NAME
           valueFrom:
@@ -264,11 +250,6 @@
           - {{ $.Values.telemetry.loadshedding.mode }}
         {{- if .Values.env }}
         env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
         {{- range $key, $val := .Values.env }}
         - name: {{ $key }}
           value: "{{ $val }}"
@@ -319,15 +300,6 @@
         - --controlPlaneAuthPolicy
         - NONE
       {{- end }}
-      {{- if $.Values.global.proxy.logLevel }}
-        - --proxyLogLevel={{ $.Values.global.proxy.logLevel }}
-      {{- end}}
-      {{- if $.Values.global.proxy.componentLogLevel }}
-        - --proxyComponentLogLevel={{ $.Values.global.proxy.componentLogLevel }}
-      {{- end}}
-      {{- if $.Values.global.logging.level }}
-        - --log_output_level={{ $.Values.global.logging.level }}
-      {{- end}}
         env:
         - name: POD_NAME
           valueFrom:
@@ -346,6 +318,12 @@
               fieldPath: status.podIP
         - name: SDS_ENABLED
           value: "{{ $.Values.global.sds.enabled }}"
+        resources:
+{{- if $.Values.global.proxy.resources }}
+{{ toYaml $.Values.global.proxy.resources | indent 10 }}
+{{- else }}
+{{ toYaml .Values.global.defaultResources | indent 10 }}
+{{- end }}
         volumeMounts:
         - name: istio-certs
           mountPath: /etc/certs

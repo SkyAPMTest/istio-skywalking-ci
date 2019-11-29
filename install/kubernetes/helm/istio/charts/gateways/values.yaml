@@ -18,6 +18,7 @@ istio-ingressgateway:
     # SDS server that watches kubernetes secrets and provisions credentials to ingress gateway.
     # This server runs in the same pod as ingress gateway.
     image: node-agent-k8s
+    resources: {}
 
   labels:
     app: istio-ingressgateway
@@ -106,12 +107,19 @@ istio-ingressgateway:
     mountPath: /etc/istio/ingressgateway-ca-certs
   ### Advanced options ############
 
+  # Ports to explicitly check for readiness. If configured, the readiness check will expect a
+  # listener on these ports. A comma separated list is expected, such as "80,443".
+  #
+  # Warning: If you do not have a gateway configured for the ports provided, this check will always
+  # fail. This is intended for use cases where you always expect to have a listener on the port,
+  # such as 80 or 443 in typical setups.
+  applicationPorts: ""
+
   env:
-    # By default, a gateway is in "standard" mode. If the mode is set to "sni-dnat", 
-    # pilot generates an additional
-    # set of clusters for internal services without Istio mTLS, to
-    # enable cross cluster routing. Enable when using multi-cluster routing.
-    ISTIO_META_ROUTER_MODE: "standard"
+    # A gateway with this mode ensures that pilot generates an additional
+    # set of clusters for internal services but without Istio mTLS, to
+    # enable cross cluster routing.
+    ISTIO_META_ROUTER_MODE: "sni-dnat"
   nodeSelector: {}
   tolerations: []
 
@@ -148,13 +156,7 @@ istio-egressgateway:
   # replicaCount: 1
   rollingMaxSurge: 100%
   rollingMaxUnavailable: 25%
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 2000m
-      memory: 1024Mi
+  resources: {}
   cpu:
     targetAverageUtilization: 80
   serviceAnnotations: {}
@@ -186,12 +188,10 @@ istio-egressgateway:
     # the egress gateway sees the same set of endpoints as the sidecars
     # preserving backward compatibility
     # ISTIO_META_REQUESTED_NETWORK_VIEW: ""
-
-    # By default, a gateway is in "standard" mode. If the mode is set to "sni-dnat", 
-    # pilot generates an additional 
+    # A gateway with this mode ensures that pilot generates an additional
     # set of clusters for internal services but without Istio mTLS, to
     # enable cross cluster routing.
-    ISTIO_META_ROUTER_MODE: "standard"
+    ISTIO_META_ROUTER_MODE: "sni-dnat"
   nodeSelector: {}
   tolerations: []
   
@@ -233,10 +233,7 @@ istio-ilbgateway:
   rollingMaxUnavailable: 25%
   cpu:
     targetAverageUtilization: 80
-  resources:
-    requests:
-      cpu: 800m
-      memory: 512Mi
+  resources: {}
     #limits:
     #  cpu: 1800m
     #  memory: 256Mi
